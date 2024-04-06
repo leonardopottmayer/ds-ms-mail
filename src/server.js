@@ -24,12 +24,12 @@ const transporter = nodemailer.createTransport({
 app.post("/send-email", (req, res) => {
   const { to, subject, text, secretKey } = req.body;
 
-  if (secretKey !== process.env.SECRET_KEY) {
-    return res.status(401).json({ error: "Invalid secret key" });
+  if (!secretKey || secretKey.toString() !== process.env.SECRET_KEY) {
+    return res.status(401).json({ message: "Invalid secret key" });
   }
 
   if (!to || !subject || !text) {
-    return res.status(400).json({ error: "Missing required fields" });
+    return res.status(400).json({ message: "Missing required fields" });
   }
 
   // Email data
